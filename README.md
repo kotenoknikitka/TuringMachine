@@ -56,10 +56,19 @@ Each cell in the transition table follows the format:
 
 `<write_symbol> <next_state> <direction>`
 
-### Parameters:
-- **`write_symbol`** - symbol to write to the current tape cell
-- **`next_state`** - state to transition to  
-- **`direction`** - move direction: `<` (left), `>` (right), `.` (stay) or `!` (stop machine)
+### Directions:
+- **`>`** - move right
+- **`<`** - move left  
+- **`.`** - stay in place
+- **`!`** - stop execution
+
+**Important:** The blank symbol (representing empty cells on the infinite tape) is represented as underscore `_` in the transition table.
+
+### Examples:
+
+- `1 q2 >` - write symbol `1`, transition to state `q2`, move right
+- `_ q0 <` - write blank symbol, transition to state `q0`, move left  
+- `0 q1 .` - write symbol `0`, transition to state `q1`, stay in place
 
 ## 🛠 Technical Details
 
