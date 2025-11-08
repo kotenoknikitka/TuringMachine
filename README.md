@@ -74,6 +74,7 @@ Each cell in the transition table follows the format:
 
 *   **Deterministic Turing Machine** implementation
 *   **Infinite tape support** in both directions
+*   Blank symbol: `_` (underscore) represents empty cells
 *   **History limitation** to prevent memory leaks
 *   **Transition validation** with clear error messages
 *   **State persistence** for programs and tapes
