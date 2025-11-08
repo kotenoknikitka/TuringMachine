@@ -27,11 +27,11 @@ class TransitionTableEditor:
         control_frame = ttk.Frame(self.frame)
         control_frame.pack(fill=tk.X, pady=5)
 
-        ttk.Button(control_frame, text="Добавить состояние",
+        ttk.Button(control_frame, text="Add state",
                    command=self.add_state).pack(side=tk.LEFT, padx=2)
-        ttk.Button(control_frame, text="Добавить символ",
+        ttk.Button(control_frame, text="Add symbol",
                    command=self.add_symbol).pack(side=tk.LEFT, padx=2)
-        ttk.Button(control_frame, text="Применить таблицу",
+        ttk.Button(control_frame, text="Apply table",
                    command=self.apply_transitions).pack(side=tk.LEFT, padx=30)
 
         # Контейнер для таблицы с прокруткой
@@ -261,30 +261,30 @@ class TuringMachineGUI:
         # Кнопки пошагового выполнения
         steps_frame = ttk.Frame(exec_frame)
         steps_frame.pack(side=tk.LEFT, padx=5)
-        ttk.Button(steps_frame, text="Шаг вперёд", command=self.step).pack(pady=(0, 2))
-        ttk.Button(steps_frame, text="Шаг назад", command=self.step_back).pack(pady=(2, 0))
+        ttk.Button(steps_frame, text="Step", command=self.step).pack(pady=(0, 2))
+        ttk.Button(steps_frame, text="Step Back", command=self.step_back).pack(pady=(2, 0))
 
         # Основные кнопки управления
-        ttk.Button(exec_frame, text="Запуск/Пауза", command=self.toggle_run).pack(side=tk.LEFT, padx=5)
-        ttk.Button(exec_frame, text="Сброс", command=self.reset).pack(side=tk.LEFT, padx=5)
-        ttk.Button(exec_frame, text="Создать ленту", command=self.create_tape_dialog).pack(side=tk.LEFT, padx=5)
+        ttk.Button(exec_frame, text="Run/Pause", command=self.toggle_run).pack(side=tk.LEFT, padx=5)
+        ttk.Button(exec_frame, text="Reset", command=self.reset).pack(side=tk.LEFT, padx=5)
+        ttk.Button(exec_frame, text="Set new tape", command=self.create_tape_dialog).pack(side=tk.LEFT, padx=5)
 
         # Операции с программой
         program_frame = ttk.Frame(exec_frame)
         program_frame.pack(side=tk.LEFT, padx=40)
-        ttk.Button(program_frame, text='Сохранить программу', command=self.save_machine).pack(pady=(0, 2))
-        ttk.Button(program_frame, text='Загрузить программу', command=self.load_machine).pack(pady=(2, 0))
+        ttk.Button(program_frame, text='Save to disk', command=self.save_machine).pack(pady=(0, 2))
+        ttk.Button(program_frame, text='Load from disk', command=self.load_machine).pack(pady=(2, 0))
 
         # Операции с лентой
         tape_ops_frame = ttk.Frame(exec_frame)
         tape_ops_frame.pack(side=tk.LEFT, padx=5)
-        ttk.Button(tape_ops_frame, text='Сохранить ленту', command=self.save_tape).pack(pady=(0, 2))
-        ttk.Button(tape_ops_frame, text='Загрузить ленту', command=self.load_tape).pack(pady=(2, 0))
+        ttk.Button(tape_ops_frame, text='Save moment', command=self.save_tape).pack(pady=(0, 2))
+        ttk.Button(tape_ops_frame, text='Load moment', command=self.load_tape).pack(pady=(2, 0))
 
         # Выбор скорости выполнения
         speed_frame = ttk.Frame(exec_frame)
         speed_frame.pack(side=tk.LEFT, padx=20)
-        ttk.Label(speed_frame, text='Выберите скорость').pack(pady=(0, 2))
+        ttk.Label(speed_frame, text='Choose your speed').pack(pady=(0, 2))
         self.speed = ttk.Combobox(speed_frame, values=['1', '2', '3', '4', '5'])
         self.speed.set('3')
         self.speed.pack(pady=(2, 0))
@@ -326,7 +326,6 @@ class TuringMachineGUI:
             head_x - 10, 10, head_x + 10, 10, head_x, 20,
             fill='red', outline='black'
         )
-        self.tape_canvas.create_text(head_x, 5, text="Головка", font=('Arial', 8))
 
         # Автоматическая прокрутка к текущей позиции головки
         self.scroll_to_head(head_pos, cell_width, start_x)
@@ -353,8 +352,8 @@ class TuringMachineGUI:
     def update_display(self):
         """Обновляет все элементы отображения состояния машины."""
         info: StateInfo = self.machine.get_state_info()
-        self.state_label.config(text=f"Состояние: {info.current_state}")
-        self.step_label.config(text=f"Шаг: {info.step_count}")
+        self.state_label.config(text=f"State: {info.current_state}")
+        self.step_label.config(text=f"Steps_done: {info.step_count}")
         self.draw_tape(info.tape, info.head_position)
         self.table_editor.highlight_active_state(info.current_state)
 
@@ -364,10 +363,10 @@ class TuringMachineGUI:
             if self.machine.run_transition():
                 self.update_display()
             else:
-                messagebox.showinfo("Завершено", "Машина остановилась!")
+                messagebox.showinfo("Done", "Machine successfully stopped!")
                 self.is_running = False
         except Exception as e:
-            messagebox.showerror("Ошибка", str(e))
+            messagebox.showerror("Error", str(e))
 
     def step_back(self):
         """Откатывает машину на один шаг назад."""
@@ -397,10 +396,10 @@ class TuringMachineGUI:
                     speed = int(self.speed.get()) if self.speed.get() else 3
                     self.root.after(2100 - 400 * speed, self.auto_run)
                 else:
-                    messagebox.showinfo("Завершено", "Машина остановилась!")
+                    messagebox.showinfo("Done", "Machine successfulle stoped!")
                     self.is_running = False
             except Exception as e:
-                messagebox.showerror("Ошибка", str(e))
+                messagebox.showerror("Error", str(e))
                 self.is_running = False
 
     def reset(self):
@@ -442,7 +441,7 @@ class TuringMachineGUI:
             except Exception as e:
                 messagebox.showerror("Ошибка", str(e))
 
-        ttk.Button(dialog, text="Применить", command=apply_tape).pack(pady=10)
+        ttk.Button(dialog, text="Ok", command=apply_tape).pack(pady=10)
 
     def save_machine(self):
         """Сохраняет текущую программу машины в файл."""
@@ -458,9 +457,9 @@ class TuringMachineGUI:
 
         try:
             self.machine.save_to_file(filename)
-            messagebox.showinfo("Успех", f"Программа сохранена в файл:\n{filename}")
+            messagebox.showinfo("Success", f"Программа сохранена в файл:\n{filename}")
         except Exception as e:
-            messagebox.showerror("Ошибка", f"Не удалось сохранить файл:\n{str(e)}")
+            messagebox.showerror("Error", f"Не удалось сохранить файл:\n{str(e)}")
 
     def save_tape(self):
         """Сохраняет текущее состояние ленты."""
@@ -487,10 +486,10 @@ class TuringMachineGUI:
             self.table_editor.create_table()
 
             self.update_display()
-            messagebox.showinfo("Успех", f"Программа загружена из файла:\n{filename}")
+            messagebox.showinfo("Success", f"Программа загружена из файла:\n{filename}")
 
         except Exception as e:
-            messagebox.showerror("Ошибка", f"Не удалось загрузить файл:\n{str(e)}")
+            messagebox.showerror("Error", f"Не удалось загрузить файл:\n{str(e)}")
 
     def load_tape(self):
         """Загружает ранее сохраненное состояние ленты."""
