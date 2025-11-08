@@ -86,7 +86,9 @@ class TransitionTableEditor:
 
     def on_canvas_configure(self, event):
         """Обновляет размер окна canvas при изменении размера виджета."""
-        self.canvas.itemconfig(self.canvas_window, width=event.width, height=event.height)
+        # Обновляем ширину внутреннего фрейма под размер canvas
+        pass
+        # Не устанавливаем высоту, чтобы фрейм мог быть выше canvas (для вертикальной прокрутки)
 
     def on_mousewheel(self, event):
         """Обрабатывает прокрутку колесиком мыши (вертикальная)."""
@@ -140,6 +142,12 @@ class TransitionTableEditor:
                     entry.insert(0, f"{trans.write_symbol} {trans.next_state} {trans.direction.value}")
 
                 self.cells[(state, symbol)] = entry
+
+        # Настройка весов строк и столбцов для правильного растягивания
+        for i in range(len(self.states) + 1):
+            self.table_frame.grid_rowconfigure(i, weight=1)
+        for i in range(len(self.symbols) + 1):
+            self.table_frame.grid_columnconfigure(i, weight=1)
 
         # Обновление области прокрутки
         self.table_frame.update_idletasks()
